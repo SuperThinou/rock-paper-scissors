@@ -27,6 +27,7 @@ function playGame() {
 
   if (humanScore === 3 || computerScore === 3) {
     winner.textContent = humanScore === 3 ? "You win !" : "Computer wins !";
+    document.querySelector(".modal").showModal();
     modal.classList.add("open");
     resetGame();
   }
@@ -121,6 +122,9 @@ function deactivatePlayButton() {
 
 deactivatePlayButton();
 
+closeBtn.addEventListener("click", () => {
+  modal.close();
+});
 closeBtn.addEventListener("click", () => {
   modal.classList.remove("open");
 });

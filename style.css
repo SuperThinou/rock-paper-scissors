@@ -80,16 +80,22 @@ button:hover {
 
 .modal {
   background-color: #191919;
-  position: fixed;
+  margin: auto;
   margin-top: 100px;
   height: 30vh;
   width: 30vh;
+  border: none;
   border-radius: 20px;
   opacity: 0;
   z-index: -1;
 
   display: flex;
   justify-content: center;
+}
+
+.modal::backdrop {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.3);
 }
 .modal.open {
   opacity: 1;
