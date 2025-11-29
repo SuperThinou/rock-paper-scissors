@@ -4,7 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+    <div class="item-container">
+      <button class="item-button" id="rockBtn">🪨</button>
+      <button class="item-button" id="paperBtn">🧻</button>
+      <button class="item-button" id="scissorsBtn">✂️</button>
+    </div>
+    <button id="playBtn" class="play-btn yellow-btn">Play</button>
+
+    <div class="result-text-container">
+      <p class="round-result">
+        <b><span id="roundResultUI"></span></b><br />
+        You chose : <span id="userElement"></span> Computer chose :
+        <span id="computerElement"></span>
+      </p>
+    </div>
+    <div class="scores">
+      <div class="player-score">
+        <h2>
+          Player <br />
+          <span id="playerScoreUI"></span>
+        </h2>
+      </div>
+      <div class="computer-score">
+        <h2>
+          Computer <br />
+          <span id="computerScoreUI"></span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div class="modal-inner">
+        <h3 id="winner"></h3>
+        <button id="closeBtn" class="close-btn yellow-btn">Close</button>
+      </div>
+    </div>
+  </body>
   <script src="script.js"></script>
 </html>

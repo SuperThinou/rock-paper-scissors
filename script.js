@@ -1,81 +1,126 @@
+// ALGO
+let humanChoice = null,
+  humanScore = 0,
+  computerScore = 0;
+
 function getComputerChoice() {
   let number = Math.random();
   let computerChoice = "";
   if (number <= 0.33) {
-    computerChoice = "rock";
+    computerChoice = "🪨";
   } else if (number > 0.33 && number <= 0.66) {
-    computerChoice = "paper";
-  } else computerChoice = "scissors";
+    computerChoice = "🧻";
+  } else computerChoice = "✂️";
 
   return computerChoice;
 }
-function getHumanChoice() {
-  let humanChoice = prompt("Choose your element");
-  humanChoice = humanChoice.toLowerCase();
-
-  return humanChoice;
-}
 
 function playGame() {
-  let humanScore = 0,
-    computerScore = 0;
+  if (!humanChoice) return;
+  const computerChoice = getComputerChoice();
+  roundResultStyle.classList.remove("hidden");
+  userElement.textContent = humanChoice;
+  computerElement.textContent = computerChoice;
 
-  function playRound(humanChoice, computerChoice) {
-    if (computerChoice === "rock") {
-      switch (humanChoice) {
-        case "rock":
-          console.log("Égalité !");
-          break;
-        case "paper":
-          console.log("Gagné !");
-          humanScore++;
-          break;
-        case "scissors":
-          console.log("Perdu !");
-          computerScore++;
-          break;
-      }
-    } else if (computerChoice === "paper") {
-      switch (humanChoice) {
-        case "paper":
-          console.log("Égalité !");
-          break;
-        case "scissors":
-          console.log("Gagné !");
-          humanScore++;
-          break;
-        case "rock":
-          console.log("Perdu !");
-          computerScore++;
-          break;
-      }
-    } else if (computerChoice === "scissors") {
-      switch (humanChoice) {
-        case "scissors":
-          console.log("Égalité !");
-          break;
-        case "rock":
-          console.log("Gagné !");
-          humanScore++;
-          break;
-        case "paper":
-          console.log("Perdu !");
-          computerScore++;
-          break;
-      }
-    }
-  }
-  for (let i = 0; i < 5; i++) {
-    console.log("Manche : " + (i + 1));
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
-    playRound(humanChoice, computerChoice);
-    console.log(
-      "Ton choix : " + humanChoice + " Choix du PC : " + computerChoice
-    );
-    console.log(
-      "--SCORES-- Humain : " + humanScore + " Machine : " + computerScore
-    );
+  const result = playRound(humanChoice, computerChoice);
+  updateUI();
+
+  if (humanScore === 3 || computerScore === 3) {
+    winner.textContent = humanScore === 3 ? "You win !" : "Computer wins !";
+    modal.classList.add("open");
+    resetGame();
   }
 }
-playGame();
+
+function playRound(humanChoice, computerChoice) {
+  itemButtons.forEach((b) => b.classList.remove("selected"));
+  deactivatePlayButton();
+  if (humanChoice === computerChoice) {
+    roundResultUI.textContent = "It's a tie!";
+    return "draw";
+  } else if (
+    (humanChoice === "🪨" && computerChoice === "✂️") ||
+    (humanChoice === "🧻" && computerChoice === "🪨") ||
+    (humanChoice === "✂️" && computerChoice === "🧻")
+  ) {
+    roundResultUI.textContent = "You win!";
+    humanScore++;
+    return "win";
+  } else {
+    roundResultUI.textContent = "You loose..";
+    computerScore++;
+    return "lose";
+  }
+}
+
+function resetGame() {
+  humanScore = 0;
+  computerScore = 0;
+  updateUI();
+  deactivatePlayButton();
+  roundResultStyle.classList.add("hidden");
+}
+
+function updateUI() {
+  playerScoreUI.textContent = humanScore;
+  computerScoreUI.textContent = computerScore;
+}
+
+// UI
+const rockBtn = document.querySelector("#rockBtn"),
+  paperBtn = document.querySelector("#paperBtn"),
+  scissorsBtn = document.querySelector("#scissorsBtn"),
+  playBtn = document.querySelector("#playBtn"),
+  roundResultUI = document.querySelector("#roundResultUI"),
+  roundResultStyle = document.querySelector(".round-result"),
+  winner = document.querySelector("#winner"),
+  modal = document.querySelector(".modal"),
+  closeBtn = document.querySelector("#closeBtn");
+roundResultStyle.classList.add("hidden");
+
+let playerScoreUI = document.querySelector("#playerScoreUI"),
+  computerScoreUI = document.querySelector("#computerScoreUI"),
+  userElement = document.querySelector("#userElement"),
+  computerElement = document.querySelector("#computerElement");
+playerScoreUI.textContent = humanScore;
+computerScoreUI.textContent = computerScore;
+
+rockBtn.addEventListener("click", () => {
+  humanChoice = "🪨";
+  activatePlayButton();
+});
+paperBtn.addEventListener("click", () => {
+  humanChoice = "🧻";
+  activatePlayButton();
+});
+scissorsBtn.addEventListener("click", () => {
+  humanChoice = "✂️";
+  activatePlayButton();
+});
+
+playBtn.addEventListener("click", playGame);
+
+const itemButtons = document.querySelectorAll(".item-button");
+
+itemButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    itemButtons.forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+  });
+});
+
+function activatePlayButton() {
+  playBtn.disabled = false;
+  playBtn.setAttribute("style", "background: #fadd00");
+}
+
+function deactivatePlayButton() {
+  playBtn.disabled = true;
+  playBtn.setAttribute("style", "background: grey");
+}
+
+deactivatePlayButton();
+
+closeBtn.addEventListener("click", () => {
+  modal.classList.remove("open");
+});
